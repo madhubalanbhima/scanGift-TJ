@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f7f2e7;
+  background-image: radial-gradient(circle at 1px 1px, #e3d9c0 1px, transparent 0);
+  background-size: 22px 22px;
+  color: #26221c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+*:focus-visible {
+  outline: 2px solid #b8892b;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Signature element: a perforated ticket edge, used on the voucher/registration card */
+.ticket-edge {
+  position: relative;
+}
+.ticket-edge::before,
+.ticket-edge::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  background: #f7f2e7;
+  border-radius: 999px;
+  transform: translateY(-50%);
+  box-shadow: inset 0 0 0 1px #e3d9c0;
+}
+.ticket-edge::before {
+  left: -12px;
+}
+.ticket-edge::after {
+  right: -12px;
+}
+
+.ticket-perforation {
+  border-top: 2px dashed #e3d9c0;
+  position: relative;
+}
+
+.stamp {
+  transform: rotate(-8deg);
+}
+
+.paper-burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.paper-piece {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 10px;
+  background: var(--paper-color);
+  border-radius: 3px;
+  transform: translate(-50%, -50%) rotate(var(--rot)) translate(var(--x), var(--y));
+  opacity: 0.9;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04);
+  animation: burst-pop 0.9s ease-out forwards;
+}
+
+@keyframes burst-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--rot)) translate(0, 0) scale(0.5);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--rot)) translate(var(--x), var(--y)) scale(1.2);
+  }
+}
