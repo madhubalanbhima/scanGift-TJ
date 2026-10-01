@@ -4,7 +4,7 @@ import Link from "next/link";
 const STATIC_REGISTER_URL =
   process.env.NEXT_PUBLIC_REGISTER_URL ||
   process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://scan-gift-tvl.vercel.app/register";
+  "https://scan-gift-tj.vercel.app/register";
 
 async function getRegisterUrl() {
   return `${STATIC_REGISTER_URL.replace(/\/$/, "")}`;
