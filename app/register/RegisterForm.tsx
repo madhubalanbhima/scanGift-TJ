@@ -267,7 +267,7 @@ export default function RegisterForm({ onSubmitSuccess }: RegisterFormProps = {}
             </div>
 
             <p className="relative z-10 mt-3 font-sans text-[10px] uppercase tracking-[0.18em] text-[#e6c76a]/80">
-              Thank you for choosing BHIMA JEWELLERY
+              Thank you for choosing BHIMA JEWELLERY. THANJAVUR.
             </p>
           </div>
         </section>
