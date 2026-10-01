@@ -260,8 +260,8 @@ export default function RegisterForm({ onSubmitSuccess }: RegisterFormProps = {}
               <p className="mx-auto mt-3 max-w-lg font-sans text-sm leading-7 text-white/90 sm:text-base">
                 
                 {deliveryStatus === "sent"
-                  ? "You have earned a Rs.1,000 voucher."
-                  : "You have earned a Rs.1,000 voucher."}
+                  ? "You have earned a Rs.5,000 voucher."
+                  : "You have earned a Rs.5,000 voucher."}
               </p>
               <br />
             </div>
