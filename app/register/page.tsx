@@ -18,7 +18,7 @@ export default function RegisterPage() {
                 className="w-full max-w-md rounded-lg border p-3 object-contain"
               />
             </div>
-            <h1 className="font-display text-2xl text-ink">Claim your e-voucher</h1>
+            <h1 className="font-display text-2xl text-ink">Voucher for THANJAVUR Opening</h1>
             <p className="mt-3 text-charcoal/70">
               Fill in your details once. We&apos;ll send your voucher straight to
               your WhatsApp.
