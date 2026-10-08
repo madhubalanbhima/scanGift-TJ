@@ -14,6 +14,7 @@ export default async function AdminDashboardPage() {
     fullName: customer.fullName || "",
     whatsappNumber: customer.whatsappNumber || "",
     address: customer.address || "",
+    pincode: customer.pincode || "",
     voucherId: customer.voucherId || "",
     deliveryStatus: customer.deliveryStatus || "pending",
     createdAt: customer.createdAt ? new Date(customer.createdAt).toISOString() : new Date().toISOString(),

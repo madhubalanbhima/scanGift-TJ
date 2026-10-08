@@ -9,6 +9,7 @@ interface CustomerRow {
   fullName: string;
   whatsappNumber: string;
   address: string;
+  pincode: string;
   voucherId: string;
   deliveryStatus: string;
   createdAt: string;
@@ -33,7 +34,8 @@ export default function AdminTable({ customers }: { customers: CustomerRow[] }) 
       (c) =>
         c.fullName.toLowerCase().includes(q) ||
         c.whatsappNumber.includes(q) ||
-        c.voucherId.toLowerCase().includes(q)
+        c.voucherId.toLowerCase().includes(q) ||
+        c.pincode
     );
   }, [customers, query]);
 
@@ -114,6 +116,7 @@ export default function AdminTable({ customers }: { customers: CustomerRow[] }) 
               <th className="px-5 py-3 font-medium">Full name</th>
               <th className="px-5 py-3 font-medium">WhatsApp</th>
               <th className="px-5 py-3 font-medium">Address</th>
+              <th className="px-5 py-3 font-medium">Pin Code</th>
               <th className="px-5 py-3 font-medium">Status</th>
               <th className="px-5 py-3 font-medium">Registered</th>
             </tr>
@@ -130,6 +133,9 @@ export default function AdminTable({ customers }: { customers: CustomerRow[] }) 
                 </td>
                 <td className="px-5 py-3 text-charcoal/70 max-w-xs truncate" title={c.address}>
                   {c.address}
+                </td>
+                <td className="px-5 py-3 text-charcoal/70 max-w-xs truncate" title={c.pincode}>
+                  {c.pincode}
                 </td>
                 <td className="px-5 py-3">
                   <span
