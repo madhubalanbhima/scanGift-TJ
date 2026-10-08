@@ -16,18 +16,27 @@ function getBaseUrl(req: NextRequest): string {
   return `${proto}://${host}`;
 }
 
-// Reads a file from public/images/ and returns a base64 data URI, or null if
-// it can't be found/read — callers must handle the null case gracefully so a
-// single missing asset never crashes the whole image.
+// Reads a file from the public image folders and returns a base64 data URI, or
+// null if it can't be found/read. We support both public/images and public/image
+// because older templates and new additions may live in either location.
 function loadImageDataUri(filename: string, mime = "image/png"): string | null {
-  try {
-    const filePath = path.join(process.cwd(), "public/images", filename);
-    const buffer = fs.readFileSync(filePath);
-    return `data:${mime};base64,${buffer.toString("base64")}`;
-  } catch (err) {
-    console.error(`[voucher-image] Failed to load ${filename}:`, err);
-    return null;
+  const searchDirs = [
+    path.join(process.cwd(), "public", "images"),
+    path.join(process.cwd(), "public", "image"),
+  ];
+
+  for (const dir of searchDirs) {
+    try {
+      const filePath = path.join(dir, filename);
+      const buffer = fs.readFileSync(filePath);
+      return `data:${mime};base64,${buffer.toString("base64")}`;
+    } catch {
+      // Try the next directory; missing assets should not crash the render.
+    }
   }
+
+  console.error(`[voucher-image] Failed to load ${filename} from ${searchDirs.join(", ")}`);
+  return null;
 }
 
 export async function GET(
@@ -49,9 +58,10 @@ export async function GET(
       return new Response("Voucher not found", { status: 404 });
     }
 
-    // Load all static promotional assets. Any of these can be missing without
-    // crashing the render — the layout just omits that piece.
-    const bgImage = loadImageDataUri("bg.png");
+    // Use the new TJ voucher template as the base background when it exists, while
+    // falling back to the old auto-generated layout assets for backwards compatibility.
+    const templateImage = loadImageDataUri("tjvoucher.jpeg", "image/jpeg");
+    const bgImage = templateImage || loadImageDataUri("bg.png");
     const badgeImage = loadImageDataUri("101.png");
     const figureImage = loadImageDataUri("bhima-boy.png");
     const modelImage = loadImageDataUri("model.png");
