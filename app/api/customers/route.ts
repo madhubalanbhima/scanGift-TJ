@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { randomUUID } from "node:crypto";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Customer } from "@/models/Customer";
+import { VoucherCounter } from "@/models/VoucherCounter";
 import {
   validateRegistration,
   hasErrors,
@@ -48,7 +48,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const voucherId = `1000-${randomUUID()}`;
+    const counter = await VoucherCounter.findOneAndUpdate(
+      { _id: "customer-voucher" },
+      { $inc: { value: 5 } },
+      { new: true, upsert: true, setDefaultsOnInsert: false }
+    ).lean();
+
+    if (!counter) {
+      throw new Error("Failed to allocate the next voucher number.");
+    }
+
+    const voucherId = String(5000 + counter.value);
 
     const customer = await Customer.create({
       fullName,
