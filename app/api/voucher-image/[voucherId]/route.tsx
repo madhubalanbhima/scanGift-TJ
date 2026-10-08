@@ -58,16 +58,9 @@ export async function GET(
       return new Response("Voucher not found", { status: 404 });
     }
 
-    // Use the new TJ voucher template as the base background when it exists, while
-    // falling back to the old auto-generated layout assets for backwards compatibility.
+    // The TJ voucher card is the actual design template. We no longer layer the
+    // older promotional images on top of it; the uploaded image is the final card.
     const templateImage = loadImageDataUri("tjvoucher.jpeg", "image/jpeg");
-    const bgImage = templateImage || loadImageDataUri("bg.png");
-    const badgeImage = loadImageDataUri("101.png");
-    const figureImage = loadImageDataUri("bhima-boy.png");
-    const modelImage = loadImageDataUri("model.png");
-    const giftImage = loadImageDataUri("gift.png");
-    const grandImage = loadImageDataUri("grand.png");
-    const logoImage = loadImageDataUri("logo.png");
 
     let qrDataUrl: string | null = null;
     try {
@@ -95,157 +88,60 @@ export async function GET(
             height: "630px",
             display: "flex",
             position: "relative",
-            borderRadius: "20px",
             overflow: "hidden",
-            background: "#1a1410",
+            background: "#f0b056",
           }}
         >
-          {/* Background */}
-          {bgImage && (
+          {templateImage && (
             <img
-              src={bgImage}
+              src={templateImage}
               width={1200}
               height={630}
-              style={{ position: "absolute", top: "0px", left: "0px", objectFit: "cover" }}
-              alt=""
+              style={{ position: "absolute", inset: 0, objectFit: "cover" }}
+              alt="TJ voucher template"
             />
           )}
 
-          {/* Top-left: 10 Years badge — adjust width/height to match your asset's real ratio */}
-          {badgeImage && (
-            <img
-              src={badgeImage}
-              width={220}
-              height={140}
-              style={{ position: "absolute", top: "20px", left: "30px", objectFit: "contain" }}
-              alt="10 Years Celebrating"
-            />
-          )}
-
-          {/* Top-right: Bhima boy figure */}
-          {figureImage && (
-            <img
-              src={figureImage}
-              width={150}
-              height={220}
-              style={{ position: "absolute", top: "0px", right: "0px", objectFit: "contain" }}
-              alt="Celebration Figure"
-            />
-          )}
-
-          {/* Left: model image, bleeding to the edge */}
-          {/* {modelImage && (
-            <img
-              src={modelImage}
-              width={440}
-              height={630}
-              style={{ position: "absolute", left: "50px", top: "100px", objectFit: "cover" }}
-              alt="Bhima Model"
-            />
-          )} */}
-
-          {/* Center: gift label + grand opening badge, stacked and centered */}
-          <div
-            style={{
-              position: "absolute",
-              top: "0px",
-              left: "230px",
-              right: "270px",
-              bottom: "100px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-            }}
-          >
-            {giftImage && (
-              <img src={giftImage} width={300} height={160} style={{ objectFit: "contain" }} alt="Gift" />
-            )}
-            {/* {grandImage && (
-              <img
-                src={grandImage}
-                width={420}
-                height={270}
-                style={{ objectFit: "contain" }}
-                alt="Grand Opening"
-              />
-            )} */}
-          </div>
-
-          {/* Right: amount badge */}
-          <div
-            style={{
-              position: "absolute",
-              right: "38px",
-              top: "245px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "5px solid #e6c76a",
-              borderRadius: "18px",
-              padding: "18px 28px",
-              background: "rgba(93,9,9,0.92)",
-              color: "#fff0b5",
-              fontSize: "64px",
-              fontWeight: 900,
-            }}
-          >
-            5,000
-          </div>
-
-          {/* QR code — bottom-left, sized to leave room for the footer bar */}
           {qrDataUrl && (
             <div
               style={{
                 position: "absolute",
-                left: "50px",
-                bottom: "90px",
+                right: "120px",
+                top: "115px",
                 display: "flex",
-                flexDirection: "column",
                 alignItems: "center",
-                background: "#ffffff",
-                borderRadius: "8px",
-                padding: "8px",
+                justifyContent: "center",
+                background: "rgba(255,255,255,0.9)",
+                borderRadius: "12px",
+                padding: "10px",
+                boxShadow: "0 8px 18px rgba(0,0,0,0.12)",
               }}
             >
-              <img src={qrDataUrl} width={180} height={180} alt="Redemption QR code" />
-              <div
-                style={{
-                  display: "flex",
-                  color: "#181511",
-                  fontSize: "10px",
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
-                  marginTop: "4px",
-                }}
-              >
-                Scan to verify
-              </div>
+              <img src={qrDataUrl} width={130} height={130} alt="Redemption QR code" />
             </div>
           )}
 
-          {/* Footer: per-customer voucher details pinned to bottom, full width */}
           <div
             style={{
               position: "absolute",
-              bottom: "0px",
-              left: "0px",
-              right: "0px",
+              left: "56px",
+              bottom: "18px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              background: "rgba(255,255,255,0.92)",
-              padding: "10px 24px",
+              background: "rgba(255,255,255,0.85)",
+              borderRadius: "8px",
+              padding: "8px 16px",
+              maxWidth: "1080px",
             }}
           >
             <div
               style={{
-                display: "flex",
                 color: "#2a1a00",
-                fontSize: "26px",
+                fontSize: "18px",
                 fontWeight: 700,
-                letterSpacing: "0.5px",
+                letterSpacing: "0.3px",
+                textAlign: "center",
               }}
             >
               {customer.fullName} · {customer.voucherId} · Issued {issuedDate}
